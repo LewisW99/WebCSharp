@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="GameCatalogue.API/GameCatalogue.API.csproj" />
+  <Project Path="GameCatalogue.DAL/GameCatalogue.DAL.csproj" />
+</Solution>
