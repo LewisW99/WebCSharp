@@ -20,7 +20,7 @@ namespace GameCatalogue.DAL.Data
         public DbSet<Game> Games => Set<Game>();
 
         /// <summary>
-        /// Configure entity mappings and constraints.
+        /// Configure mappings and constraints.
         /// </summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -51,6 +51,8 @@ namespace GameCatalogue.DAL.Data
                 entity.Property(g => g.Rating)
                       .HasPrecision(3, 1);
             });
+
+            #region Preset Games
 
             modelBuilder.Entity<Game>().HasData(
             new Game
@@ -90,6 +92,7 @@ namespace GameCatalogue.DAL.Data
                 Platform = "Multi-platform"
             }
             );
+            #endregion
         }
     }
 }

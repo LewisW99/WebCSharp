@@ -11,7 +11,7 @@
         public int Id { get; set; }
 
         /// <summary>
-        /// Game title (e.g. "Half-Life 2").
+        /// Game title.
         /// </summary>
         public string Title { get; set; } = string.Empty;
 
@@ -21,17 +21,17 @@
         public DateTime ReleaseDate { get; set; }
 
         /// <summary>
-        /// Review score (0–100 or 0–10 depending on your choice).
+        /// Review score (0–100).
         /// </summary>
         public double Rating { get; set; }
 
         /// <summary>
-        /// Primary genre (RPG, FPS, Strategy, etc).
+        /// Primary genre.
         /// </summary>
         public string Genre { get; set; } = string.Empty;
 
         /// <summary>
-        /// Platform the game released on (PC, PS5, Xbox, etc).
+        /// Platform the game released on.
         /// </summary>
         public string Platform { get; set; } = string.Empty;
     }
