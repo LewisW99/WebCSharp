@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="GameCatalogue.API/GameCatalogue.API.csproj" Id="d115cdab-6687-4aa4-8e15-36f92bd8d003" />
+  <Project Path="GameCatalogue.BLL/GameCatalogue.BLL.csproj" Id="376567ef-09b8-4b15-b350-06b7fa79c65c" />
   <Project Path="GameCatalogue.DAL/GameCatalogue.DAL.csproj" />
 </Solution>

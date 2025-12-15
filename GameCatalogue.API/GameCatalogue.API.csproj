@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GameCatalogue.BLL\GameCatalogue.BLL.csproj" />
     <ProjectReference Include="..\GameCatalogue.DAL\GameCatalogue.DAL.csproj" />
   </ItemGroup>
 
