@@ -1,4 +1,5 @@
-﻿using GameCatalogue.BLL.Services;
+﻿using GameCatalogue.API.Dtos;
+using GameCatalogue.BLL.Services;
 using GameCatalogue.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,13 +18,15 @@ namespace GameCatalogue.API.Controllers
         public GamesController(GameService gameService)
             => _gameService = gameService;
 
+        
+
         /// <summary>
         /// Returns all games.
         /// GET: api/games
         /// </summary>
         [HttpGet]
         public IActionResult GetAll()
-            => Ok(_gameService.GetAllGames());
+            => Ok(_gameService.GetAllGames().Select(ToDto));
 
         /// <summary>
         /// Returns a single game by ID.
@@ -31,8 +34,8 @@ namespace GameCatalogue.API.Controllers
         /// </summary>
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
-            => _gameService.GetGameById(id) is { } game
-                ? Ok(game)
+             => _gameService.GetGameById(id) is { } game
+                ? Ok(ToDto(game))
                 : NotFound();
 
         /// <summary>
@@ -40,17 +43,24 @@ namespace GameCatalogue.API.Controllers
         /// POST: api/games
         /// </summary>
         [HttpPost]
-        public IActionResult Create([FromBody] Game game)
+        public IActionResult Create([FromBody] GameDto dto)
         {
-            if (game == null)
-                return BadRequest();
+            var game = new Game
+            {
+                Title = dto.Title,
+                ReleaseDate = dto.ReleaseDate,
+                Rating = dto.Rating,
+                Genre = dto.Genre,
+                Platform = dto.Platform
+            };
 
-            var created = _gameService.AddGame(game);
+            if (dto.ReleaseDate.Date > DateTime.UtcNow.Date)
+                return BadRequest("Release date cannot be in the future.");
 
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = created.Id },
-                created);
+
+            _gameService.AddGame(game);
+
+            return CreatedAtAction(nameof(GetById), new { id = game.Id }, ToDto(game));
         }
 
         /// <summary>
@@ -58,10 +68,25 @@ namespace GameCatalogue.API.Controllers
         /// PUT: api/games/{id}
         /// </summary>
         [HttpPut("{id:int}")]
-        public IActionResult Update(int id, [FromBody] Game game)
-            => _gameService.UpdateGame(id, game)
+        public IActionResult Update(int id, [FromBody] GameDto dto)
+        {
+            var game = new Game
+            {
+                Title = dto.Title,
+                ReleaseDate = dto.ReleaseDate,
+                Rating = dto.Rating,
+                Genre = dto.Genre,
+                Platform = dto.Platform
+            };
+
+            if (dto.ReleaseDate.Date > DateTime.UtcNow.Date)
+                return BadRequest("Release date cannot be in the future.");
+
+
+            return _gameService.UpdateGame(id, game)
                 ? NoContent()
                 : NotFound();
+        }
 
         /// <summary>
         /// Deletes a game by ID.
@@ -72,5 +97,17 @@ namespace GameCatalogue.API.Controllers
             => _gameService.DeleteGame(id)
                 ? NoContent()
                 : NotFound();
+
+        private static GameDto ToDto(Game game) => new()
+        {
+            Id = game.Id,
+            Title = game.Title,
+            ReleaseDate = game.ReleaseDate,
+            Rating = game.Rating,
+            Genre = game.Genre,
+            Platform = game.Platform
+        };
+
+       
     }
 }
